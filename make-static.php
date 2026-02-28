@@ -1,19 +1,22 @@
 <?php
+use Dom\HTMLDocument as HTMLDocument;
 
-if (!class_exists('Dom\HTMLDocument')) {
-  echo("HTMLDocument does not exist. install it with\napt install php-xml\nphpenmod dom\n");
+if (!extension_loaded('dom')) {
+  echo("cannot find DOM extension. install it with\nsudo apt install php-xml\nsudo phpenmod dom\n");
   return;
 }
+
+$config = include('config.php');
+var_dump($config);
 
 $base_in = 'content';
 $base_out = 'site';
 
 function compile_php($path) {
-  global $base_in;
-  global $base_out;
+  global $config;
   $path_parts = pathinfo($path);
-  $path_in = $base_in . $path;
-  $dir_out = $base_out . $path_parts['dirname'];
+  $path_in = $config['input_root'] . $path;
+  $dir_out = $config['output_root'] . $path_parts['dirname'];
   if (!file_exists($dir_out)) {
     mkdir($dir_out, 0777, true);
   }
@@ -26,7 +29,7 @@ function compile_php($path) {
 
   file_put_contents($path_out, $buffer);
 
-  $doc = Dom\HTMLDocument::createFromString($buffer, LIBXML_HTML_NOIMPLIED);
+  $doc = HTMLDocument::createFromString($buffer, LIBXML_HTML_NOIMPLIED);
   $hrefs = [];
   foreach ($doc->querySelectorAll('a') as $el) {
     foreach ($el->attributes as $attr) {
