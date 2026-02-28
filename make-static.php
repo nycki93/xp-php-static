@@ -7,10 +7,6 @@ if (!extension_loaded('dom')) {
 }
 
 $config = include('config.php');
-var_dump($config);
-
-$base_in = 'content';
-$base_out = 'site';
 
 function compile_php($path) {
   global $config;
@@ -26,7 +22,6 @@ function compile_php($path) {
   include($path_in);
   $buffer = ob_get_contents();
   ob_end_clean();
-
   file_put_contents($path_out, $buffer);
 
   $doc = HTMLDocument::createFromString($buffer, LIBXML_HTML_NOIMPLIED);
@@ -40,6 +35,20 @@ function compile_php($path) {
   }
 
   var_dump($hrefs);
+}
+
+function list_files($root) {
+  $result = [];
+  foreach(scandir($root) as $file) {
+    if (substr($file, 0, 1) == '.') continue;
+    $file = $root . '/' . $file;
+    if (is_dir($file)) {
+      $result = array_merge($result, list_files($file));
+    } else {
+      $result[] = $file;
+    }
+  }
+  return $result;
 }
 
 compile_php("/index.php");
