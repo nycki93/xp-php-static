@@ -8,15 +8,11 @@ if (!extension_loaded('dom')) {
 
 $config = include('config.php');
 
-function compile_php($path) {
-  global $config;
-  $path_parts = pathinfo($path);
-  $path_in = $config['input_root'] . $path;
-  $dir_out = $config['output_root'] . $path_parts['dirname'];
+function compile_php($path_in, $path_out) {
+  $dir_out = pathinfo($path_out)['dirname'];
   if (!file_exists($dir_out)) {
     mkdir($dir_out, 0777, true);
   }
-  $path_out = $dir_out . $path_parts['filename'] . '.html';
 
   ob_start();
   include($path_in);
@@ -34,7 +30,7 @@ function compile_php($path) {
     }
   }
 
-  var_dump($hrefs);
+  # var_dump(hrefs);
 }
 
 function list_files($root) {
@@ -51,4 +47,18 @@ function list_files($root) {
   return $result;
 }
 
-compile_php("/index.php");
+function main() {
+  global $config;
+  foreach(list_files($config['input_root']) as $path_in) {
+    $path_parts = pathinfo($path_in);
+    $path_out = $config['output_root'] . substr($path_in, strlen($config['input_root']));
+    if ($path_parts['extension'] == 'php') {
+      $path_out = substr($path_out, 0, -strlen('php')) . 'html';
+      compile_php($path_in, $path_out);
+    } else {
+      copy($path_in, $path_out);
+    }
+  }
+}
+
+main();
