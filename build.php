@@ -1,7 +1,7 @@
 <?php
 
-if (!class_exists('DOMDocument')) {
-  echo("DOMDocument does not exist. install it with\napt install php-xml\n");
+if (!class_exists('Dom\HTMLDocument')) {
+  echo("HTMLDocument does not exist. install it with\napt install php-xml\nphpenmod dom\n");
   return;
 }
 
@@ -26,8 +26,17 @@ function compile_php($path) {
 
   file_put_contents($path_out, $buffer);
 
-  $doc = new DomDocument();
-  $doc->loadHTML($buffer);
+  $doc = Dom\HTMLDocument::createFromString($buffer, LIBXML_HTML_NOIMPLIED);
+  $hrefs = [];
+  foreach ($doc->querySelectorAll('a') as $el) {
+    foreach ($el->attributes as $attr) {
+      if ($attr->nodeName == 'href') {
+        $hrefs[] = $attr->nodeValue;
+      }
+    }
+  }
+
+  var_dump($hrefs);
 }
 
 compile_php("/index.php");
