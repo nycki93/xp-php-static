@@ -1,12 +1,6 @@
 <?php
-use Dom\HTMLDocument as HTMLDocument;
-
-if (!extension_loaded('dom')) {
-  echo("cannot find DOM extension. install it with\nsudo apt install php-xml\nsudo phpenmod dom\n");
-  return;
-}
-
 $config = include('config.php');
+$_SERVER['DOCUMENT_ROOT'] = realpath($config['input_root']);
 
 function compile_php($path_in, $path_out) {
   $dir_out = pathinfo($path_out)['dirname'];
@@ -19,18 +13,6 @@ function compile_php($path_in, $path_out) {
   $buffer = ob_get_contents();
   ob_end_clean();
   file_put_contents($path_out, $buffer);
-
-  $doc = HTMLDocument::createFromString($buffer, LIBXML_HTML_NOIMPLIED);
-  $hrefs = [];
-  foreach ($doc->querySelectorAll('a') as $el) {
-    foreach ($el->attributes as $attr) {
-      if ($attr->nodeName == 'href') {
-        $hrefs[] = $attr->nodeValue;
-      }
-    }
-  }
-
-  # var_dump(hrefs);
 }
 
 function list_files($root) {
