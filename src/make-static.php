@@ -2,11 +2,13 @@
 $config = include_once 'config.php';
 
 function compile_php($path_in, $path_out) {
+  global $config;
   $dir_out = pathinfo($path_out)['dirname'];
   if (!file_exists($dir_out)) {
     mkdir($dir_out, 0777, true);
   }
 
+  $_SERVER['REQUEST_URI'] = substr($path_in, strlen($config['input_root']));
   ob_start();
   include($path_in);
   $buffer = ob_get_contents();
