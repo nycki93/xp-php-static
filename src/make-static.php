@@ -1,6 +1,31 @@
 <?php
 $config = include_once 'config.php';
 
+/**
+ * recursively list all files in a directory and its subdirectories.
+ *
+ * @param string $root
+ * @return Generator<string>
+ */
+function list_files($root) {
+  foreach(scandir($root) as $file) {
+    if ($file == '.' || $file == '..') continue;
+    $file = "$root/$file";
+    if (is_dir($file)) {
+      yield from list_files($file);
+    } else {
+      yield $file;
+    }
+  }
+}
+
+/**
+ * compile a php file to html.
+ *
+ * @param string $path_in
+ * @param string $path_out
+ * @return void
+ */
 function compile_php($path_in, $path_out) {
   global $config;
   $dir_out = pathinfo($path_out)['dirname'];
@@ -14,20 +39,6 @@ function compile_php($path_in, $path_out) {
   $buffer = ob_get_contents();
   ob_end_clean();
   file_put_contents($path_out, $buffer);
-}
-
-function list_files($root) {
-  $result = [];
-  foreach(scandir($root) as $file) {
-    if (substr($file, 0, 1) == '.') continue;
-    $file = $root . '/' . $file;
-    if (is_dir($file)) {
-      $result = array_merge($result, list_files($file));
-    } else {
-      $result[] = $file;
-    }
-  }
-  return $result;
 }
 
 function main() {
