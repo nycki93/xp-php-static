@@ -25,7 +25,7 @@ put your stuff in /public
 test your site with
 
 ```
-php -S localhost:8000 -t public -c php.ini
+php src/serve.php
 ```
 
 compile to a static site with
