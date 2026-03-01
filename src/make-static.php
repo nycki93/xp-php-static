@@ -1,5 +1,6 @@
 <?php
 $config = include_once 'config.php';
+$base_uri = $config['base_uri'];
 
 /**
  * recursively list all files in a directory and its subdirectories.
