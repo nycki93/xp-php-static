@@ -1,5 +1,6 @@
 <?php
-function from_root($path) {
-  $back = str_repeat('../', count(explode('/', $_SERVER['REQUEST_URI'])) - 2);
-  return $back . $path;
+$base_uri ??= 'http://localhost:8000';
+function back_path($path=null) {
+  $path ??= $_SERVER['REQUEST_URI'];
+  return str_repeat('../', count(explode('/', $path)) - 2);
 }
