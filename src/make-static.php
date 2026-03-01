@@ -1,6 +1,5 @@
 <?php
-$config = include('config.php');
-$_SERVER['DOCUMENT_ROOT'] = realpath($config['input_root']);
+$config = include_once 'config.php';
 
 function compile_php($path_in, $path_out) {
   $dir_out = pathinfo($path_out)['dirname'];

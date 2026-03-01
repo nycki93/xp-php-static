@@ -7,8 +7,7 @@ a static site builder that compiles php to html
 debian/ubuntu:
 
 ```
-sudo apt install php php-xml
-sudo phpenmod dom
+sudo apt install php
 ```
 
 windows:
@@ -21,18 +20,16 @@ winget install PHP.PHP
 
 ## editing
 
-put your stuff in /content
-
-copy config.sample.php to config.php
+put your stuff in /public
 
 test your site with
 
 ```
-php -S localhost:8000 -t content
+php -S localhost:8000 -t public -c php.ini
 ```
 
 compile to a static site with
 
 ```
-php make-static.php
+php src/make-static.php
 ```
