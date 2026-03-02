@@ -1,6 +1,7 @@
 <?php
 $dir = __DIR__;
-set_include_path("$dir/../include:$dir");
+$seperator = PATH_SEPARATOR;
+set_include_path("$dir/../include$seperator$dir");
 return [
   // directory containing your pages and assets.
   'input_root' => 'public',
