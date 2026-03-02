@@ -1,10 +1,11 @@
 <?php 
-  global $base_uri;
   include_once 'setup.php';
-
+  
   $title ??= 'default page title';
   $description ??= 'default page description';
-  $image ??= "$base_uri/path/to/preview.png";
+  $image ??= "/path/to/preview.png";
+
+  $image = $_SERVER['HTTP_HOST'] . $image;
 ?>
 <!DOCTYPE html>
 <html lang="en">
