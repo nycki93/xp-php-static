@@ -12,11 +12,11 @@ sudo apt install php
 
 windows:
 
-(TODO: test on windows)
+```
+winget install PHP.PHP.8.4
+```
 
-```
-winget install PHP.PHP
-```
+or download from [php.net](https://www.php.net/).
 
 ## where do i put stuff?
 
