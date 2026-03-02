@@ -1,11 +1,9 @@
 <?php 
+  include_once 'main.php';
+
   $title ??= 'default page title';
   $description ??= 'default page description';
   $image ??= "/path/to/preview.png";
-
-  // relative path to root
-  $root_relative = str_repeat('../', count(explode('/', $_SERVER['REQUEST_URI'])) - 2);
-  $root_absolute = $_SERVER['HTTP_HOST'];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -18,7 +16,7 @@
 <meta name="twitter:card" content="summary_large_image"/>
 <meta property="og:title" content="<?= $title ?>"/>
 <meta property="og:description" content="<?= $description ?>"/>
-<meta property="og:image" content="<?= $root_absolute . $image ?>"/>
+<meta property="og:image" content="<?= $_SERVER['HTTP_HOST'] . $image ?>"/>
 
 <link rel="stylesheet" href="style.css"/>
 

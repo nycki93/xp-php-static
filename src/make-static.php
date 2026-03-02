@@ -1,8 +1,8 @@
 <?php
 $config = include_once 'config.php';
 
-// override http host so static links (e.g. opengraph image previews) work correctly.
-$_SERVER['HTTP_HOST'] = $config['base_uri'];
+set_include_path(__DIR__.'/../include'.PATH_SEPARATOR.__DIR__);
+putenv('static=1');
 
 /**
  * recursively list all files in a directory and its subdirectories.
